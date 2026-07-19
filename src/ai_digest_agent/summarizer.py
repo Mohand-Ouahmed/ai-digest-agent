@@ -20,10 +20,12 @@ Contenu : {content}
 
 Reponds uniquement avec le resume, sans preambule."""
 
+
 class LlmClient(Protocol):
     """Interface minimale attendue d'un client LLM."""
 
     def complete(self, prompt: str) -> str: ...
+
 
 @dataclass
 class Summary:
@@ -31,8 +33,10 @@ class Summary:
     summary: str
     source_url: str
 
+
 class SummarizationError(RuntimeError):
     """Levee quand le LLM echoue apres tous les essais."""
+
 
 class Summarizer:
     def __init__(self, client: LlmClient, config: Config):
@@ -51,7 +55,8 @@ class Summarizer:
                 return self._client.complete(prompt)
             except Exception as exc:
                 last_error = exc
-                time.sleep(2**attempt)
+                if attempt < self._config.max_retries - 1:
+                    time.sleep(2**attempt)
         raise SummarizationError(
             f"Echec apres {self._config.max_retries} tentatives"
         ) from last_error
