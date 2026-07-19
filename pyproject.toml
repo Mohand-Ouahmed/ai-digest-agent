@@ -5,17 +5,21 @@ description = "Agent de veille technique : sources -> resume LLM -> digest"
 requires-python = ">=3.11"
 dependencies = [
     "anthropic>=0.34.0",
-        "feedparser>=6.0.11",
-        ]
+    "feedparser>=6.0.11",
+]
 
-        [project.optional-dependencies]
-        dev = [
-            "pytest>=8.0.0",
-            ]
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+]
 
-            [project.scripts]
-            ai-digest-agent = "ai_digest_agent.cli:main"
+[project.scripts]
+ai-digest-agent = "ai_digest_agent.cli:main"
 
-            [build-system]
-            requires = ["setuptools>=68.0"]
-            build-backend = "setuptools.build_meta"
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
